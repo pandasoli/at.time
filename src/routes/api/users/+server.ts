@@ -1,0 +1,31 @@
+import { json, error } from '@sveltejs/kit'
+import type { Cookies, RequestHandler } from '@sveltejs/kit'
+
+import { connectDb } from '$lib/server/mongo.ts'
+import User from '$lib/server/models/User.ts'
+
+
+const authorization = async (cookies: Cookies) => {
+	const auth_token = cookies.get('auth_token')
+
+	// Connect to the database
+	await connectDb()
+
+	// Verify user permissions
+	const user = await User.findOne({ _id: auth_token })
+
+	return user && user.permissions.includes('users')
+}
+
+export const GET: RequestHandler = async ({ cookies }) => {
+	if (!await authorization(cookies))
+		return error(403, 'Not authorized')
+
+	// Retrive data
+	const users = await User.find({}, {
+		password: 0,
+		updatedAt: 0
+	})
+
+	return json(users)
+}

@@ -24,5 +24,14 @@
     "tailwindcss": "^4.0.0",
     "typescript": "^5.0.0",
     "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@types/bun": "^1.2.2",
+    "bcryptjs": "^2.4.3",
+    "mongodb": "^6.13.0",
+    "mongoose": "^8.10.0",
+    "pdfjs-dist": "^4.10.38",
+    "quill": "^2.0.3",
+    "slugify": "^1.6.6"
   }
 }
