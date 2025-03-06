@@ -5,10 +5,10 @@
 	import type { SubmitFunction } from '@sveltejs/kit'
 	import type { IPost } from '$lib/server/models/Post.ts'
 	import type Quill from 'quill'
-
 	import TagSelector from '$lib/TagSelector.svelte'
 
 	let isCreating = false
+	let errMsg: string|null = null
 
 	let title: string = ''
 	let description: string = ''
@@ -16,7 +16,6 @@
 	let tags: string[] = []
 	let editor: Quill|null
 
-	export let form: {error?: string}
 	const editingPost: IPost|null = page.data.editingPost
 	const allTags: string[] = page.data.allTags
 
@@ -63,9 +62,23 @@
 		if (editingPost)
 			formData.set('slug', editingPost?.slug ?? '')
 
-		return async ({ update }) => {
-			await update()
+		return async ({ result }) => {
 			isCreating = false
+			const didFail = result.type !== 'success'
+
+			if (didFail)
+				return errMsg = (result as any).data.error
+
+			if (!editingPost) {
+				errMsg = ''
+				title = ''
+				description = ''
+				author = ''
+				tags = []
+				editor!.root.innerHTML = ''
+			}
+
+			// TODO: redirect to post page if editing
 		}
 	}
 </script>
@@ -85,5 +98,5 @@
 		<button disabled={isCreating}>Submit</button>
 	</form>
 
-	{form?.error}
+	{errMsg}
 </section>

@@ -77,19 +77,17 @@ export const actions: Actions = {
 				author,
 				views: 0,
 				tags,
-				contents
+				contents: contents.replace(/&nbsp;/g, ' ')
 			})
 
 			// Save the post to the database
 			await post.save()
 		}
-		catch (err) {
-			console.error('Error creating post:', err, '\\0')
+		catch (err: any) {
+			if (err.code === 11000 && err.keyPattern?.slug)
+				return fail(500, { error: 'A post with this slug already exists' })
 			return fail(500, { error: 'Failed to create post' })
 		}
-
-		// Redirect back to the creation page
-		return redirect(303, '/new')
 	},
 	update: async ({ request, cookies }) => {
 		// Verify user permissions
@@ -121,15 +119,12 @@ export const actions: Actions = {
 				description,
 				author,
 				tags,
-				contents
+				contents: contents.replace(/&nbsp;/g, ' ')
 			})
 		}
 		catch (err) {
 			console.error('Error editing post:', err, '\\0')
 			return fail(500, { error: 'Failed to edit post' })
 		}
-
-		// Redirect back to the creation page
-		return redirect(303, '/new')
 	}
 }

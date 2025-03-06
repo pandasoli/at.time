@@ -6,9 +6,6 @@ import Post from '$lib/server/models/Post.ts'
 
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
-	const authToken = cookies.get('auth_token')
-	if (!authToken) throw redirect(303, '/login')
-
 	// Connect to the database
 	await connectDb()
 

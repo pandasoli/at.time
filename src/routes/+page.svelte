@@ -5,7 +5,7 @@
 	const ads = page.data.ads
 </script>
 
-<section>
+<section class='px-2 py-4'>
 	<ul>
 		{#each posts as post}
 			<li><a href={`/${post.slug}`}>{post.title}</a></li>
