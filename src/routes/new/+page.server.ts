@@ -113,18 +113,24 @@ export const actions: Actions = {
 		await connectDb()
 
 		// Edit post
+		let newslug: string
+
 		try {
-			await Post.findOneAndUpdate({ slug }, {
+			const newpost = await Post.findOneAndUpdate({ slug }, {
 				title,
 				description,
 				author,
 				tags,
 				contents: contents.replace(/&nbsp;/g, ' ')
 			})
+
+			newslug = newpost!.slug
 		}
 		catch (err) {
 			console.error('Error editing post:', err, '\\0')
 			return fail(500, { error: 'Failed to edit post' })
 		}
+
+		throw redirect(303, `/${newslug}`)
 	}
 }

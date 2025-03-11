@@ -62,9 +62,11 @@
 		if (editingPost)
 			formData.set('slug', editingPost?.slug ?? '')
 
-		return async ({ result }) => {
+		return async ({ update, result }) => {
+			await update()
+
 			isCreating = false
-			const didFail = result.type !== 'success'
+			const didFail = !['success', 'redirect'].includes(result.type)
 
 			if (didFail)
 				return errMsg = (result as any).data.error
@@ -77,8 +79,6 @@
 				tags = []
 				editor!.root.innerHTML = ''
 			}
-
-			// TODO: redirect to post page if editing
 		}
 	}
 </script>
