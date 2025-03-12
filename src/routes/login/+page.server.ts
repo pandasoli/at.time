@@ -38,6 +38,6 @@ export const actions: Actions = {
 		})
 
 		// Redirect to the home page or a protected route
-		return redirect(303, '/dashboard')
+		throw redirect(303, '/dashboard')
 	}
 }
