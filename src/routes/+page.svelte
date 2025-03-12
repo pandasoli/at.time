@@ -1,8 +1,9 @@
 <script lang='ts'>
-	import { page } from '$app/state'
+	import type { IAd } from '$lib/server/models/Ad.ts'
+	import type { IPost } from '$lib/server/models/Post.ts'
 
-	const posts = page.data.posts
-	const ads = page.data.ads
+	export let data: { posts: IPost[], ads: IAd[] }
+	const { posts, ads } = data
 </script>
 
 <section class='px-2 py-4'>

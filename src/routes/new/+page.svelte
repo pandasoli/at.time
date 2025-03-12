@@ -1,7 +1,6 @@
 <script lang='ts'>
 	import { onMount } from 'svelte'
 	import { enhance } from '$app/forms'
-	import { page } from '$app/state'
 	import type { SubmitFunction } from '@sveltejs/kit'
 	import type { IPost } from '$lib/server/models/Post.ts'
 	import type Quill from 'quill'
@@ -16,8 +15,8 @@
 	let tags: string[] = []
 	let editor: Quill|null
 
-	const editingPost: IPost|null = page.data.editingPost
-	const allTags: string[] = page.data.allTags
+	export let data: { editingPost: IPost|null, allTags: string[] }
+	const { editingPost, allTags } = data
 
 	onMount(async () => {
 		const Quill = (await import('quill')).default

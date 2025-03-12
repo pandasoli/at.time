@@ -1,9 +1,9 @@
 <script lang='ts'>
-	import { page } from '$app/state'
 	import type { IPost } from '$lib/server/models/Post.ts'
 	import IconFeed from '$lib/icons/feed.svelte'
 
-	const post: IPost = page.data.post
+	export let data: { post: IPost }
+	const { post } = data
 
 	function formatDate(date: Date) {
 		const formatter = date.toLocaleDateString('pt-BR', {
